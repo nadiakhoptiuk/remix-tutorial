@@ -11,18 +11,31 @@
     "typecheck": "tsc"
   },
   "dependencies": {
-    "@remix-run/node": "^2.15.0",
-    "@remix-run/react": "^2.15.0",
-    "@remix-run/serve": "^2.15.0",
-    "isbot": "^4.1.0",
+    "@mantine/core": "^7.15.0",
+    "@mantine/hooks": "^7.15.0",
+    "@remix-run/node": "^2.15.1",
+    "@remix-run/react": "^2.15.1",
+    "@remix-run/serve": "^2.15.1",
+    "@rvf/remix": "^6.3.0",
+    "@rvf/zod": "^6.0.3",
+    "i18next": "^23.16.2",
+    "i18next-browser-languagedetector": "^8.0.0",
+    "i18next-fs-backend": "^2.6.0",
+    "i18next-http-backend": "^3.0.1",
+    "install": "^0.13.0",
+    "isbot": "^4.4.0",
     "match-sorter": "^6.3.1",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
+    "npm": "^10.9.2",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-i18next": "^15.1.0",
+    "remix-i18next": "^6.4.1",
     "sort-by": "^1.2.0",
-    "tiny-invariant": "^1.3.3"
+    "tiny-invariant": "^1.3.3",
+    "zod": "^3.24.0"
   },
   "devDependencies": {
-    "@remix-run/dev": "^2.15.0",
+    "@remix-run/dev": "^2.15.1",
     "@types/react": "^18.2.20",
     "@types/react-dom": "^18.2.7",
     "@typescript-eslint/eslint-plugin": "^6.13.0",
@@ -33,10 +46,19 @@
     "eslint-plugin-jsx-a11y": "^6.8.0",
     "eslint-plugin-react": "^7.33.2",
     "eslint-plugin-react-hooks": "^4.6.0",
+    "postcss": "^8.4.49",
+    "postcss-preset-mantine": "^1.17.0",
+    "postcss-simple-vars": "^7.0.1",
     "typescript": "^5.1.6",
     "vite": "^5.1.4",
     "vite-tsconfig-paths": "^4.3.1"
   },
+  "browserslist": [
+    "last 2 Chrome versions",
+    "last 2 Firefox versions",
+    "last 2 Safari versions",
+    "last 2 Edge versions"
+  ],
   "engines": {
     "node": ">=20.0.0"
   }

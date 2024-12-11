@@ -9,4 +9,12 @@ export default defineConfig({
     }),
     tsconfigPaths(),
   ],
+  build: {
+    target: "ES2022",
+  },
+  optimizeDeps: {
+    esbuildOptions: {
+      target: "esnext",
+    },
+  },
 });

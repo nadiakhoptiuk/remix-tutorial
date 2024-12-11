@@ -8,7 +8,13 @@ export type ContactType = {
   favorite?: boolean;
 };
 
+export enum LocaleEnum {
+  UK = "uk",
+  EN = "en",
+}
+
 export interface RootLoaderData {
   contacts: ContactType[];
   q: string;
+  locale: LocaleEnum;
 }

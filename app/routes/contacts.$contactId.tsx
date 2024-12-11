@@ -1,5 +1,5 @@
 import { Form, useFetcher, useLoaderData } from "@remix-run/react";
-import type { FunctionComponent } from "react";
+import { useEffect, type FunctionComponent } from "react";
 import invariant from "tiny-invariant";
 
 import { getContact, updateContact } from "../data";
@@ -95,6 +95,10 @@ const Favorite: FunctionComponent<{
   const favorite = fetcher.formData
     ? fetcher.formData.get("favorite") === "true"
     : contact.favorite;
+
+  useEffect(() => {
+    console.log(fetcher);
+  }, [fetcher]);
 
   return (
     <fetcher.Form method='post'>
