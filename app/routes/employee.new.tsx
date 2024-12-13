@@ -4,11 +4,12 @@ import { useForm } from "@rvf/remix";
 import { withZod } from "@rvf/zod";
 import { useTranslation } from "react-i18next";
 import { z } from "zod";
-import { MultiSelectField } from "~/components/MultiSelectField";
+import { Button } from "~/components/Button";
+// import { MultiSelectField } from "~/components/MultiSelectField";
 
 import { PasswordField } from "~/components/PassswordField";
 import { SingleSelectField } from "~/components/SingleSelectField";
-import { SubmitButton } from "~/components/SubmitButton";
+import { TagsField } from "~/components/TagsField/TagsField";
 // import { TagsField } from "~/components/TagsField/TagsField";
 import { TextField } from "~/components/TextField";
 
@@ -56,7 +57,7 @@ export default function CreateUserPage() {
   return (
     <div>
       <form {...form.getFormProps()}>
-        <SimpleGrid cols={1} spacing='md'>
+        <SimpleGrid cols={1} spacing='lg'>
           <h3>{t("greeting", { ns: "common" })}</h3>
           <h3>{t("heading", { ns: "employee" })}</h3>
           <TextField label='First name' scope={form.scope("firstName")} />
@@ -71,7 +72,7 @@ export default function CreateUserPage() {
               { value: "ng", label: "Angular" },
             ]}
           />
-          {/* <TagsField
+          {/* <MultiSelectField
             label='Tags'
             scope={form.scope("tags")}
             options={[
@@ -81,24 +82,16 @@ export default function CreateUserPage() {
               { value: "backend", label: "backend" },
             ]}
           /> */}
-          <MultiSelectField
+          <TagsField
             label='Tags'
             scope={form.scope("tags")}
-            options={[
-              { value: "react", label: "react" },
-              { value: "web_development", label: "web_development" },
-              { value: "frontend", label: "frontend" },
-              { value: "backend", label: "backend" },
-            ]}
+            options={["react", "web_development", "frontend", "backend"]}
           />
-
-          <SubmitButton
-            variant='filled'
-            defaultLabel={t("buttons.submit.default", {
+          <Button variant='filled' loading={form.formState.isSubmitting}>
+            {t("buttons.submit.default", {
               ns: "common",
             })}
-            loading={form.formState.isSubmitting}
-          />
+          </Button>
         </SimpleGrid>
       </form>
     </div>

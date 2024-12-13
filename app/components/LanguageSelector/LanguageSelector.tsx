@@ -18,6 +18,7 @@ export const LanguageSelector = ({ locale }: { locale: LocaleEnum }) => {
       }
       data={LANGUAGE_SELECTOR_OPTIONS}
       defaultValue={locale}
+      size='md'
     />
   );
 };

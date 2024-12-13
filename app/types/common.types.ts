@@ -32,7 +32,7 @@ export interface SingleSelectProps<Type> {
 
 export interface MultiSelectProps<Type> {
   label: string;
-  scope: FormScope<Array<string>>;
+  scope: FormScope<Array<Type>>;
   options: Array<Type>;
   placeholder?: string;
 }

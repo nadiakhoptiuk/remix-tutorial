@@ -24,6 +24,13 @@ export const SingleSelectField = <
         "aria-describedby": errorId,
         "aria-invalid": !!field.error(),
       })}
+      size='md'
+      styles={{
+        input: {
+          boxShadow:
+            "0 0px 1px hsla(0, 0%, 0%, 0.2), 0 1px 2px hsla(0, 0%, 0%, 0.2)",
+        },
+      }}
     />
   );
 };

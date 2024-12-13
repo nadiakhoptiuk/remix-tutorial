@@ -38,14 +38,18 @@ export const TagsField = <
         id: inputId,
         "aria-describedby": errorId,
         "aria-invalid": !!field.error(),
-        onChange: (data) => {
-          field.setValue(data);
-        },
       })}
       error={field.error()}
       maxDropdownHeight={200}
       acceptValueOnBlur
-      splitChars={[" "]}
+      styles={{
+        input: {
+          boxShadow:
+            "0 0px 1px hsla(0, 0%, 0%, 0.2), 0 1px 2px hsla(0, 0%, 0%, 0.2)",
+        },
+        inputField: { boxShadow: "none" },
+      }}
+      size='md'
     />
   );
 };

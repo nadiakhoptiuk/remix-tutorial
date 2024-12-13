@@ -1,6 +1,7 @@
 import { useField } from "@rvf/remix";
 import { useId } from "react";
 import { TextInput } from "@mantine/core";
+import "@mantine/core/styles/Input.css";
 
 import { StringFieldProps } from "~/types/common.types";
 
@@ -26,6 +27,9 @@ export const TextField = ({
         })}
         error={field.error()}
         size='md'
+        styles={{
+          wrapper: { marginBottom: 2 },
+        }}
         {...rest}
       />
     </div>

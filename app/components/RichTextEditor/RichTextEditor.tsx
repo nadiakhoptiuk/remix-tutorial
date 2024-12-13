@@ -4,7 +4,7 @@ import { useId } from "react";
 import Highlight from "@tiptap/extension-highlight";
 import Underline from "@tiptap/extension-underline";
 import StarterKit from "@tiptap/starter-kit";
-import { RichTextEditor } from "@mantine/tiptap";
+import { RichTextEditor, RichTextEditorLabels } from "@mantine/tiptap";
 import { useEditor } from "@tiptap/react";
 import { TextInput, VisuallyHidden } from "@mantine/core";
 import Placeholder from "@tiptap/extension-placeholder";
@@ -12,12 +12,10 @@ import Placeholder from "@tiptap/extension-placeholder";
 import "@mantine/tiptap/styles.css";
 
 import { StringFieldProps } from "~/types/common.types";
+import { useTranslation } from "react-i18next";
 
 export const Editor = ({ label, scope }: StringFieldProps) => {
   const field = useField(scope);
-  // const [value, setValue] = useState<string>();
-
-  // console.log(value);
 
   const editor = useEditor({
     extensions: [
@@ -37,6 +35,12 @@ export const Editor = ({ label, scope }: StringFieldProps) => {
   const inputId = useId();
   const errorId = useId();
 
+  const { t } = useTranslation();
+  const labels: Partial<RichTextEditorLabels> = t("labels", {
+    ns: "richTextLabels",
+    returnObjects: true,
+  }) as Partial<RichTextEditorLabels>;
+
   return (
     <div>
       <VisuallyHidden>
@@ -50,7 +54,7 @@ export const Editor = ({ label, scope }: StringFieldProps) => {
         />
       </VisuallyHidden>
 
-      <RichTextEditor editor={editor} variant='subtle'>
+      <RichTextEditor editor={editor} labels={labels} variant='subtle'>
         <RichTextEditor.Toolbar sticky>
           <RichTextEditor.ControlsGroup>
             <RichTextEditor.Bold />
@@ -59,7 +63,6 @@ export const Editor = ({ label, scope }: StringFieldProps) => {
             <RichTextEditor.Strikethrough />
             <RichTextEditor.ClearFormatting />
             <RichTextEditor.Highlight />
-            <RichTextEditor.Code />
           </RichTextEditor.ControlsGroup>
 
           <RichTextEditor.ControlsGroup>
@@ -67,6 +70,8 @@ export const Editor = ({ label, scope }: StringFieldProps) => {
             <RichTextEditor.H2 />
             <RichTextEditor.H3 />
             <RichTextEditor.H4 />
+            <RichTextEditor.H5 />
+            <RichTextEditor.H6 />
           </RichTextEditor.ControlsGroup>
 
           <RichTextEditor.ControlsGroup>
@@ -86,6 +91,19 @@ export const Editor = ({ label, scope }: StringFieldProps) => {
           <RichTextEditor.ControlsGroup>
             <RichTextEditor.Undo />
             <RichTextEditor.Redo />
+          </RichTextEditor.ControlsGroup>
+
+          <RichTextEditor.ControlsGroup>
+            <RichTextEditor.AlignLeft />
+            <RichTextEditor.AlignCenter />
+            <RichTextEditor.AlignJustify />
+            <RichTextEditor.AlignRight />
+          </RichTextEditor.ControlsGroup>
+
+          <RichTextEditor.ControlsGroup>
+            <RichTextEditor.CodeBlock />
+
+            {/* <RichTextEditor.ColorPicker colors={theme.colors} /> */}
           </RichTextEditor.ControlsGroup>
         </RichTextEditor.Toolbar>
 
