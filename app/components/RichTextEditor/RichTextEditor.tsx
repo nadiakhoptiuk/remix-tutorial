@@ -1,0 +1,98 @@
+import { useField } from "@rvf/remix";
+import { useId } from "react";
+/* eslint-disable import/no-named-as-default */
+import Highlight from "@tiptap/extension-highlight";
+import Underline from "@tiptap/extension-underline";
+import StarterKit from "@tiptap/starter-kit";
+import { RichTextEditor } from "@mantine/tiptap";
+import { useEditor } from "@tiptap/react";
+import { TextInput, VisuallyHidden } from "@mantine/core";
+import Placeholder from "@tiptap/extension-placeholder";
+
+import "@mantine/tiptap/styles.css";
+
+import { StringFieldProps } from "~/types/common.types";
+
+export const Editor = ({ label, scope }: StringFieldProps) => {
+  const field = useField(scope);
+  // const [value, setValue] = useState<string>();
+
+  // console.log(value);
+
+  const editor = useEditor({
+    extensions: [
+      StarterKit,
+      Underline,
+      Highlight,
+      Placeholder.configure({ placeholder: "This is placeholder" }),
+    ],
+    content: field.value() || "",
+    onUpdate: ({ editor }) => {
+      field.setValue(editor.getHTML());
+    },
+
+    immediatelyRender: false,
+  });
+
+  const inputId = useId();
+  const errorId = useId();
+
+  return (
+    <div>
+      <VisuallyHidden>
+        <TextInput
+          label={label}
+          {...field.getInputProps({
+            id: inputId,
+            "aria-describedby": errorId,
+            "aria-invalid": !!field.error(),
+          })}
+        />
+      </VisuallyHidden>
+
+      <RichTextEditor editor={editor} variant='subtle'>
+        <RichTextEditor.Toolbar sticky>
+          <RichTextEditor.ControlsGroup>
+            <RichTextEditor.Bold />
+            <RichTextEditor.Italic />
+            <RichTextEditor.Underline />
+            <RichTextEditor.Strikethrough />
+            <RichTextEditor.ClearFormatting />
+            <RichTextEditor.Highlight />
+            <RichTextEditor.Code />
+          </RichTextEditor.ControlsGroup>
+
+          <RichTextEditor.ControlsGroup>
+            <RichTextEditor.H1 />
+            <RichTextEditor.H2 />
+            <RichTextEditor.H3 />
+            <RichTextEditor.H4 />
+          </RichTextEditor.ControlsGroup>
+
+          <RichTextEditor.ControlsGroup>
+            <RichTextEditor.Blockquote />
+            <RichTextEditor.Hr />
+            <RichTextEditor.BulletList />
+            <RichTextEditor.OrderedList />
+            <RichTextEditor.Subscript />
+            <RichTextEditor.Superscript />
+          </RichTextEditor.ControlsGroup>
+
+          <RichTextEditor.ControlsGroup>
+            <RichTextEditor.Link />
+            <RichTextEditor.Unlink />
+          </RichTextEditor.ControlsGroup>
+
+          <RichTextEditor.ControlsGroup>
+            <RichTextEditor.Undo />
+            <RichTextEditor.Redo />
+          </RichTextEditor.ControlsGroup>
+        </RichTextEditor.Toolbar>
+
+        <RichTextEditor.Content />
+      </RichTextEditor>
+
+      {field.error() && <span>{field.error()}</span>}
+    </div>
+  );
+};

@@ -1,14 +1,13 @@
-import { useField } from "@rvf/remix";
 import { useId } from "react";
-import { TextInput } from "@mantine/core";
+import { useField } from "@rvf/remix";
+import { PasswordInput } from "@mantine/core";
 
 import { StringFieldProps } from "~/types/common.types";
 
-export const TextField = ({
+export const PasswordField = ({
   label,
   scope,
   placeholder,
-  ...rest
 }: StringFieldProps) => {
   const field = useField(scope);
   const inputId = useId();
@@ -16,7 +15,7 @@ export const TextField = ({
 
   return (
     <div>
-      <TextInput
+      <PasswordInput
         label={label}
         placeholder={placeholder}
         {...field.getInputProps({
@@ -25,8 +24,6 @@ export const TextField = ({
           "aria-invalid": !!field.error(),
         })}
         error={field.error()}
-        size='md'
-        {...rest}
       />
     </div>
   );

@@ -1,3 +1,22 @@
 {
-  "greeting": "Привіт"
+  "greeting": "Привіт",
+
+  "buttons": {
+    "submit": {
+      "default": "Відправити",
+      "submitting": "Відправка..."
+    },
+    "update": {
+      "default": "Оновити",
+      "submitting": "Оновлення..."
+    },
+    "create": {
+      "default": "Створити",
+      "submitting": "Створення..."
+    }
+  },
+
+  "placeholders": {
+    "tagsField": "Виберіть зі списку або введіть що-небудь"
+  }
 }

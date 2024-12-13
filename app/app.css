@@ -395,3 +395,14 @@ i {
   justify-content: center;
   width: 100%;
 }
+
+.mantine-InputWrapper-error {
+  position: absolute;
+}
+
+.mantine-InputWrapper-root {
+  position: relative;
+}
+.mantine-PasswordInput-innerInput {
+  border-radius: inherit;
+}

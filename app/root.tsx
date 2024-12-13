@@ -12,11 +12,11 @@ import {
   useNavigation,
   useSubmit,
 } from "@remix-run/react";
-
 import { useChangeLanguage } from "remix-i18next/react";
+
 import { useTranslation } from "react-i18next";
 import i18next from "./i18next.server";
-import { ColorSchemeScript, MantineProvider } from "@mantine/core";
+import { ColorSchemeScript, createTheme, MantineProvider } from "@mantine/core";
 
 import appStylesHref from "./app.css?url";
 import "@mantine/core/styles.css";
@@ -24,6 +24,8 @@ import { createEmptyContact, getContacts } from "./data";
 
 import { RootLoaderData } from "./types/common.types";
 import { useEffect, useState } from "react";
+import { LanguageSelector } from "./components/LanguageSelector";
+import { commitSession, sessionStorage } from "./services/session.server";
 
 export const links: LinksFunction = () => [
   { rel: "stylesheet", href: appStylesHref },
@@ -32,13 +34,22 @@ export const links: LinksFunction = () => [
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const url = new URL(request.url);
   const q = url.searchParams.get("q");
+
   const locale = await i18next.getLocale(request);
 
-  console.log("locale >>", locale);
-
   const contacts = await getContacts(q);
+  const session = await sessionStorage.getSession(
+    request.headers.get("cookie")
+  );
 
-  return Response.json({ contacts, q, locale });
+  return Response.json(
+    { contacts, q, locale },
+    {
+      headers: {
+        "Set-Cookie": await commitSession(session),
+      },
+    }
+  );
 };
 
 export const action = async () => {
@@ -54,7 +65,36 @@ export const handle = {
   i18n: "common",
 };
 
-// const theme = createTheme({});
+const theme = createTheme({
+  colors: {
+    "ocean-blue": [
+      "#7AD1DD",
+      "#5FCCDB",
+      "#44CADC",
+      "#2AC9DE",
+      "#1AC2D9",
+      "#11B7CD",
+      "#09ADC3",
+      "#0E99AC",
+      "#128797",
+      "#147885",
+    ],
+  },
+  breakpoints: {
+    md: "768px",
+    lg: "1024px",
+    xl: "1440px",
+  },
+  cursorType: "pointer",
+});
+
+// const resolver: CSSVariablesResolver = () => ({
+//   dark: {},
+//   light: {},
+//   variables: {
+//     "--input-margin-bottom": "0",
+//   },
+// });
 
 export function Layout() {
   const { contacts, q, locale } = useLoaderData<RootLoaderData>();
@@ -65,7 +105,6 @@ export function Layout() {
     navigation.location &&
     new URLSearchParams(navigation.location.search).has("q");
 
-  console.log(locale);
   const { i18n } = useTranslation();
   useChangeLanguage(locale);
 
@@ -84,9 +123,12 @@ export function Layout() {
       </head>
 
       <body>
-        <MantineProvider>
+        <MantineProvider theme={theme}>
           <div id='sidebar'>
             <h1>Remix Contacts</h1>
+
+            <LanguageSelector locale={locale} />
+
             <div>
               <Form
                 id='search-form'
@@ -117,7 +159,6 @@ export function Layout() {
                 <button type='submit'>New</button>
               </Form>
             </div>
-
             <nav>
               {contacts.length ? (
                 <ul>

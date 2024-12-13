@@ -1,3 +1,22 @@
 {
-  "greeting": "Hello"
+  "greeting": "Hello",
+
+  "buttons": {
+    "submit": {
+      "default": "Submit",
+      "submitting": "Submitting..."
+    },
+    "update": {
+      "default": "Update",
+      "submitting": "Updating..."
+    },
+    "create": {
+      "default": "Create",
+      "submitting": "Creating..."
+    }
+  },
+
+  "placeholders": {
+    "tagsField": "Pick from the list or enter anything"
+  }
 }
