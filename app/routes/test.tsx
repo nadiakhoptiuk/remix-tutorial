@@ -5,6 +5,7 @@ import { useForm } from "@rvf/remix";
 import { withZod } from "@rvf/zod";
 import { z } from "zod";
 import { Button } from "~/components/Button";
+import { MultiSelectLarge } from "~/components/MultiSelectLarge";
 // import { MultiSelectField } from "~/components/MultiSelectField";
 // import { Post } from "~/components/Post";
 import { Editor } from "~/components/RichTextEditor/RichTextEditor";
@@ -46,12 +47,13 @@ export default function TestPage() {
           })
           .trim()
           .min(1),
-        city: z.string().min(1, { message: "City is required" }),
+        cities: z.string().trim().min(1, { message: "Cities is required" }),
+        city: z.string().trim().min(1, { message: "City is required" }),
       })
     ),
     defaultValues: {
       editor: content,
-      // cities: ["West Alexzander", "Champaign"],
+      cities: ["West Alexzander", "Champaign"],
       city: "",
     },
     method: "POST",
@@ -62,13 +64,15 @@ export default function TestPage() {
     <div>
       <form {...form.getFormProps()} method='POST'>
         <Editor label='Content:' scope={form.scope("editor")} />
-        {/* <MultiSelectField
+        <MultiSelectLarge
           label='Cities'
           scope={form.scope("cities")}
           options={cities}
-        /> */}
+          visibleOptions={5}
+        />
+
         <SingleSelectLarge
-          label='Cities'
+          label='City'
           scope={form.scope("city")}
           options={cities}
           visibleOptions={5}

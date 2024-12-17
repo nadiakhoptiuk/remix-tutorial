@@ -43,3 +43,10 @@ export interface MultiSelectProps<Type> {
   options: Array<Type>;
   placeholder?: string;
 }
+
+export interface MultiSelectLargeProps<Type> {
+  label: string;
+  scope: FormScope<Array<string>>;
+  options: Array<Type>;
+  visibleOptions: number;
+}

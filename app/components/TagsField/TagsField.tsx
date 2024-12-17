@@ -25,8 +25,7 @@ export const TagsField = <
   const field = useField(scope);
   const inputId = useId();
   const errorId = useId();
-
-  console.log(field);
+  console.log(field.value());
 
   return (
     <TagsInput

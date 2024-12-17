@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useField } from "@rvf/remix";
-import { Box, Combobox, Text, TextInput, useCombobox } from "@mantine/core";
+import { Box, Combobox, InputBase, Text, useCombobox } from "@mantine/core";
 
 import { SingleSelectLargeProps } from "~/types/common.types";
 
@@ -57,9 +57,9 @@ export const SingleSelectLarge = <Type extends string>({
         }}
       >
         <Text>{label}</Text>
-        <TextInput hidden {...field.getHiddenInputProps()} />
+        <InputBase hidden {...field.getHiddenInputProps()} />
         <Combobox.Target>
-          <TextInput
+          <InputBase
             rightSection={<Combobox.Chevron />}
             value={search}
             onClick={() => combobox.openDropdown()}
