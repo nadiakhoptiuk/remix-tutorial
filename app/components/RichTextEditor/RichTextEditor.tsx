@@ -102,8 +102,6 @@ export const Editor = ({ label, scope }: StringFieldProps) => {
 
           <RichTextEditor.ControlsGroup>
             <RichTextEditor.CodeBlock />
-
-            {/* <RichTextEditor.ColorPicker colors={theme.colors} /> */}
           </RichTextEditor.ControlsGroup>
         </RichTextEditor.Toolbar>
 

@@ -30,6 +30,13 @@ export interface SingleSelectProps<Type> {
   options: Array<Type>;
 }
 
+export interface SingleSelectLargeProps<Type> {
+  label: string;
+  scope: FormScope<string>;
+  options: Array<Type>;
+  visibleOptions: number;
+}
+
 export interface MultiSelectProps<Type> {
   label: string;
   scope: FormScope<Array<Type>>;

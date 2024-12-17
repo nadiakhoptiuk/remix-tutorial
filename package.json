@@ -19,6 +19,8 @@
     "@remix-run/serve": "^2.15.1",
     "@rvf/remix": "^6.3.0",
     "@rvf/zod": "^6.0.3",
+    "@tabler/core": "^1.0.0-beta21",
+    "@tabler/icons-react": "^3.24.0",
     "@tiptap/extension-highlight": "^2.10.3",
     "@tiptap/extension-link": "^2.10.3",
     "@tiptap/extension-placeholder": "^2.10.3",

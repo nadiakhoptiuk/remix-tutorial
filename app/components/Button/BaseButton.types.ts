@@ -3,4 +3,5 @@ import { ReactNode } from "react";
 
 export interface BaseButtonProps extends ButtonProps {
   children: ReactNode;
+  type: "button" | "submit";
 }
