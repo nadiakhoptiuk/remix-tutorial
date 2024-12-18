@@ -11,6 +11,7 @@ export const MultiSelectField = <
   scope,
   options,
   placeholder,
+  hidePickedOptions = true,
 }: MultiSelectProps<Type>) => {
   const field = useField(scope);
   const inputId = useId();
@@ -26,7 +27,7 @@ export const MultiSelectField = <
         "aria-describedby": errorId,
         "aria-invalid": !!field.error(),
       })}
-      hidePickedOptions
+      hidePickedOptions={hidePickedOptions}
       nothingFoundMessage='Nothing found...'
       styles={{
         input: {

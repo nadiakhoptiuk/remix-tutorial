@@ -5,11 +5,13 @@ import { useForm } from "@rvf/remix";
 import { withZod } from "@rvf/zod";
 import { z } from "zod";
 import { Button } from "~/components/Button";
+import { Checkbox } from "~/components/Checkbox";
 import { MultiSelectLarge } from "~/components/MultiSelectLarge";
-// import { MultiSelectField } from "~/components/MultiSelectField";
 // import { Post } from "~/components/Post";
 import { Editor } from "~/components/RichTextEditor/RichTextEditor";
 import { SingleSelectLarge } from "~/components/SingleSelectLarge";
+import { CheckboxGroup } from "~/components/CheckboxGroup";
+
 import citiesData from "~/constants/citiesData.json";
 
 export const loader = async () => {
@@ -49,12 +51,20 @@ export default function TestPage() {
           .min(1),
         cities: z.string().trim().min(1, { message: "Cities is required" }),
         city: z.string().trim().min(1, { message: "City is required" }),
+        agreement: z.string().refine((value) => value === "on", {
+          message: "You must accept the terms.",
+        }),
+        technologies: z.string().refine((value) => value !== "", {
+          message: "You must choose at least one option",
+        }),
       })
     ),
     defaultValues: {
       editor: content,
       cities: ["West Alexzander", "Champaign"],
       city: "",
+      agreement: false,
+      technologies: ["React"],
     },
     method: "POST",
     handleSubmit: (data) => console.log("LOG HANDLE SUBMIT", data),
@@ -65,17 +75,25 @@ export default function TestPage() {
       <form {...form.getFormProps()} method='POST'>
         <Editor label='Content:' scope={form.scope("editor")} />
         <MultiSelectLarge
-          label='Cities'
+          label='Multi Select for Large Data'
           scope={form.scope("cities")}
           options={cities}
-          visibleOptions={5}
+          visibleOptionsLimit={5}
         />
-
         <SingleSelectLarge
-          label='City'
+          label='Single Select for Large Data'
           scope={form.scope("city")}
           options={cities}
           visibleOptions={5}
+        />
+        <Checkbox
+          label='Do you agree with rules?'
+          scope={form.scope("agreement")}
+        />
+        <CheckboxGroup
+          scope={form.scope("technologies")}
+          label='Choose technologies you work with'
+          options={["React", "Svelte", "Angular", "Vue"]}
         />
 
         <Button loading={form.formState.isSubmitting} type='submit'>

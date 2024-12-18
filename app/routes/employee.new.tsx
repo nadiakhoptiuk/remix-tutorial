@@ -7,11 +7,9 @@ import { useTranslation } from "react-i18next";
 import { z } from "zod";
 
 import { Button } from "~/components/Button";
-// import { MultiSelectField } from "~/components/MultiSelectField";
 import { PasswordField } from "~/components/PassswordField";
 import { SingleSelectField } from "~/components/SingleSelectField";
 import { TagsField } from "~/components/TagsField/TagsField";
-// import { TagsField } from "~/components/TagsField/TagsField";
 import { TextField } from "~/components/TextField";
 
 import {
@@ -21,7 +19,7 @@ import {
   IconTags,
   IconUsers,
 } from "@tabler/icons-react";
-// import { MultiSelectField } from "~/components/MultiSelectField";
+import { MultiSelectLarge } from "~/components/MultiSelectLarge";
 
 export const enum NavigationLink {
   HOME = "/",
@@ -63,8 +61,6 @@ export const DashboardNavLinks = [
   },
 ];
 
-// import citiesData from "~/constants/citiesData.json";
-
 export const action = async ({ request }: ActionFunctionArgs) => {
   const formData = await request.formData();
   const updates = Object.fromEntries(formData);
@@ -91,12 +87,7 @@ export default function CreateUserPage() {
           .regex(new RegExp(/^[a-zA-Z_,]+$/), {
             message: "Must contains of: a-z, A-Z or _",
           }),
-        // cities: z
-        //   .string()
-        //   .trim()
-        //   .regex(new RegExp(/^[a-zA-Z ,]+$/), {
-        //     message: "Must contains of: a-z, A-Z or space",
-        //   }),
+        cities: z.string().trim().min(1),
       })
     ),
     defaultValues: {
@@ -106,14 +97,12 @@ export default function CreateUserPage() {
       password: "",
       technology: "react",
       tags: ["react", "web_development"],
-      // cities: ["West Alexzander", "Champaign"],
+      cities: ["New York", "Texas", "California"],
     },
     method: "POST",
   });
 
   const { t } = useTranslation();
-
-  // console.log("citiesData", citiesData.length);
 
   return (
     <div>
@@ -153,11 +142,19 @@ export default function CreateUserPage() {
               { value: "ng", label: "Angular" },
             ]}
           />
-          {/* <MultiSelectField
+          <MultiSelectLarge
             label='Cities'
             scope={form.scope("cities")}
-            options={citiesData.map(({ label }) => label)}
-          /> */}
+            options={[
+              "New York",
+              "Texas",
+              "New Virginia",
+              "Washington",
+              "Chicago",
+              "California",
+            ]}
+            maxHeight={100}
+          />
           <TagsField
             label='Tags'
             scope={form.scope("tags")}

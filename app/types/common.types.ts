@@ -42,11 +42,21 @@ export interface MultiSelectProps<Type> {
   scope: FormScope<Array<Type>>;
   options: Array<Type>;
   placeholder?: string;
+  hidePickedOptions?: boolean;
 }
 
 export interface MultiSelectLargeProps<Type> {
   label: string;
   scope: FormScope<Array<string>>;
   options: Array<Type>;
-  visibleOptions: number;
+  visibleOptionsLimit?: number | "all";
+  hideActiveOptions?: boolean;
+  maxHeight?: number;
 }
+
+export type TechnologiesGroupType = {
+  react: string;
+  svelte: string;
+  angular: string;
+  vue: string;
+};

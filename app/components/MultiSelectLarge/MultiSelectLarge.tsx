@@ -12,25 +12,35 @@ import { useState } from "react";
 
 import { MultiSelectLargeProps } from "~/types/common.types";
 
-function getFilteredOptionsWithoutActive({
+function getFilteredOptions({
   options,
   value,
   searchQuery,
-  limit,
+  limit = "all",
+  hideActiveOptions,
 }: {
   options: string[];
   value: string[];
   searchQuery: string;
-  limit: number;
+  limit?: number | "all";
+  hideActiveOptions: boolean;
 }) {
   const result: string[] = [];
+
+  if (limit === "all" && !hideActiveOptions) {
+    return options;
+  }
+
+  if (limit === "all" && hideActiveOptions) {
+    return options.filter((option) => !value.includes(option));
+  }
 
   for (let i = 0; i < options.length; i += 1) {
     if (result.length === limit) {
       break;
     }
 
-    if (value.includes(options[i])) {
+    if (hideActiveOptions && value.includes(options[i])) {
       continue;
     }
 
@@ -46,7 +56,9 @@ export const MultiSelectLarge = <Type extends string>({
   options,
   label,
   scope,
-  visibleOptions,
+  visibleOptionsLimit = "all",
+  hideActiveOptions = true,
+  maxHeight = 200,
 }: MultiSelectLargeProps<Type>) => {
   const field = useField(scope);
   const combobox = useCombobox({
@@ -56,11 +68,12 @@ export const MultiSelectLarge = <Type extends string>({
   const [search, setSearch] = useState<string>("");
   const value = field.value();
 
-  const filteredOptions = getFilteredOptionsWithoutActive({
+  const filteredOptions = getFilteredOptions({
     options,
     value,
     searchQuery: search,
-    limit: visibleOptions,
+    limit: visibleOptionsLimit,
+    hideActiveOptions,
   });
 
   const handleValueRemove = (val: string) => {
@@ -134,7 +147,7 @@ export const MultiSelectLarge = <Type extends string>({
         </Combobox.Target>
 
         <Combobox.Dropdown>
-          <Combobox.Options>
+          <Combobox.Options mah={maxHeight} style={{ overflowY: "auto" }}>
             {selectOptions.length > 0 ? (
               selectOptions
             ) : (
