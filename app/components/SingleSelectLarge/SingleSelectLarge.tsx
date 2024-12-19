@@ -4,20 +4,28 @@ import { Box, Combobox, InputBase, Text, useCombobox } from "@mantine/core";
 
 import { SingleSelectLargeProps } from "~/types/common.types";
 
-function getFilteredOptions(
-  data: string[],
-  searchQuery: string,
-  limit: number
-) {
+function getFilteredOptions({
+  options,
+  searchQuery,
+  limit = "all",
+}: {
+  options: string[];
+  searchQuery: string;
+  limit?: number | "all";
+}) {
   const result: string[] = [];
 
-  for (let i = 0; i < data.length; i += 1) {
+  if (limit === "all" && searchQuery === "") {
+    return options;
+  }
+
+  for (let i = 0; i < options.length; i += 1) {
     if (result.length === limit) {
       break;
     }
 
-    if (data[i].toLowerCase().includes(searchQuery.trim().toLowerCase())) {
-      result.push(data[i]);
+    if (options[i].toLowerCase().includes(searchQuery.trim().toLowerCase())) {
+      result.push(options[i]);
     }
   }
 
@@ -28,15 +36,21 @@ export const SingleSelectLarge = <Type extends string>({
   options,
   label,
   scope,
-  visibleOptions,
+  visibleOptionsLimit = "all",
+  creatable = true,
 }: SingleSelectLargeProps<Type>) => {
   const field = useField(scope);
   const combobox = useCombobox({
     onDropdownClose: () => combobox.resetSelectedOption(),
   });
   const [search, setSearch] = useState<string>(field.value() as string | "");
+  const [data, setData] = useState<string[]>(options);
 
-  const filteredOptions = getFilteredOptions(options, search, visibleOptions);
+  const filteredOptions = getFilteredOptions({
+    options: data,
+    searchQuery: search,
+    limit: visibleOptionsLimit,
+  });
 
   const selectOptions = filteredOptions.map((item) => (
     <Combobox.Option value={item} key={item}>
@@ -50,10 +64,17 @@ export const SingleSelectLarge = <Type extends string>({
         store={combobox}
         withinPortal={false}
         onOptionSubmit={(val) => {
-          setSearch(val);
-          field.setValue(val);
-          field.validate();
-          combobox.closeDropdown();
+          if (val === "$create") {
+            field.setValue(search);
+            field.validate();
+            setData((current) => [...current, search]);
+            combobox.closeDropdown();
+          } else {
+            setSearch(val);
+            field.setValue(val);
+            field.validate();
+            combobox.closeDropdown();
+          }
         }}
       >
         <Text>{label}</Text>
@@ -84,7 +105,16 @@ export const SingleSelectLarge = <Type extends string>({
             {selectOptions.length > 0 ? (
               selectOptions
             ) : (
-              <Combobox.Empty>Nothing found</Combobox.Empty>
+              <>
+                <Combobox.Empty style={{ textAlign: "left" }}>
+                  Nothing found
+                </Combobox.Empty>
+                {creatable && (
+                  <Combobox.Option value='$create'>
+                    + Create {search}
+                  </Combobox.Option>
+                )}
+              </>
             )}
           </Combobox.Options>
         </Combobox.Dropdown>

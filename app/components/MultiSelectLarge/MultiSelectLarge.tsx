@@ -27,11 +27,11 @@ function getFilteredOptions({
 }) {
   const result: string[] = [];
 
-  if (limit === "all" && !hideActiveOptions) {
+  if (limit === "all" && !hideActiveOptions && searchQuery === "") {
     return options;
   }
 
-  if (limit === "all" && hideActiveOptions) {
+  if (limit === "all" && hideActiveOptions && searchQuery === "") {
     return options.filter((option) => !value.includes(option));
   }
 
@@ -59,6 +59,7 @@ export const MultiSelectLarge = <Type extends string>({
   visibleOptionsLimit = "all",
   hideActiveOptions = true,
   maxHeight = 200,
+  creatable = true,
 }: MultiSelectLargeProps<Type>) => {
   const field = useField(scope);
   const combobox = useCombobox({
@@ -151,7 +152,16 @@ export const MultiSelectLarge = <Type extends string>({
             {selectOptions.length > 0 ? (
               selectOptions
             ) : (
-              <Combobox.Empty>Nothing found</Combobox.Empty>
+              <>
+                <Combobox.Empty style={{ textAlign: "left" }}>
+                  Nothing found
+                </Combobox.Empty>
+                {creatable && (
+                  <Combobox.Option value='$create'>
+                    + Create {search}
+                  </Combobox.Option>
+                )}
+              </>
             )}
           </Combobox.Options>
         </Combobox.Dropdown>

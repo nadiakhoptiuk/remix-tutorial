@@ -7,9 +7,9 @@ import { useTranslation } from "react-i18next";
 import { z } from "zod";
 
 import { Button } from "~/components/Button";
-import { PasswordField } from "~/components/PassswordField";
+// import { PasswordField } from "~/components/PassswordField";
 import { SingleSelectField } from "~/components/SingleSelectField";
-import { TagsField } from "~/components/TagsField/TagsField";
+// import { TagsField } from "~/components/TagsField/TagsField";
 import { TextField } from "~/components/TextField";
 
 import {
@@ -20,6 +20,7 @@ import {
   IconUsers,
 } from "@tabler/icons-react";
 import { MultiSelectLarge } from "~/components/MultiSelectLarge";
+import { SingleSelectLarge } from "~/components/SingleSelectLarge";
 
 export const enum NavigationLink {
   HOME = "/",
@@ -79,14 +80,9 @@ export default function CreateUserPage() {
         firstName: z.string().min(1),
         lastName: z.string().min(1),
         email: z.string().min(1).email("Must be a valid email"),
-        password: z.string().min(8, "Enter at least 8 symbols").max(12),
+        // password: z.string().min(8, "Enter at least 8 symbols").max(12),
         technology: z.string(),
-        tags: z
-          .string()
-          .trim()
-          .regex(new RegExp(/^[a-zA-Z_,]+$/), {
-            message: "Must contains of: a-z, A-Z or _",
-          }),
+        tags: z.string().trim().min(1, { message: "caugh!" }),
         cities: z.string().trim().min(1),
       })
     ),
@@ -94,12 +90,13 @@ export default function CreateUserPage() {
       firstName: "Jane",
       lastName: "Doe",
       email: "jane.doe@example.com",
-      password: "",
+      // password: "",
       technology: "react",
-      tags: ["react", "web_development"],
+      tags: "react",
       cities: ["New York", "Texas", "California"],
     },
     method: "POST",
+    handleSubmit: (data) => console.log("LOG HANDLE SUBMIT", data),
   });
 
   const { t } = useTranslation();
@@ -133,7 +130,9 @@ export default function CreateUserPage() {
           <TextField label='First name' scope={form.scope("firstName")} />
           <TextField label='Last name' scope={form.scope("lastName")} />
           <TextField label='Email' scope={form.scope("email")} />
-          <PasswordField label='Password' scope={form.scope("password")} />
+
+          {/* <PasswordField label='Password' scope={form.scope("password")} /> */}
+
           <SingleSelectField
             label='Technologies:'
             scope={form.scope("technology")}
@@ -142,6 +141,13 @@ export default function CreateUserPage() {
               { value: "ng", label: "Angular" },
             ]}
           />
+
+          <SingleSelectLarge
+            label='Tags'
+            scope={form.scope("tags")}
+            options={["react", "web_development", "frontend", "backend"]}
+          />
+
           <MultiSelectLarge
             label='Cities'
             scope={form.scope("cities")}
@@ -155,11 +161,11 @@ export default function CreateUserPage() {
             ]}
             maxHeight={100}
           />
-          <TagsField
+          {/* <TagsField
             label='Tags'
             scope={form.scope("tags")}
             options={["react", "web_development", "frontend", "backend"]}
-          />
+          /> */}
           <Button
             type='submit'
             variant='filled'

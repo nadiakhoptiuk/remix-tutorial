@@ -34,7 +34,8 @@ export interface SingleSelectLargeProps<Type> {
   label: string;
   scope: FormScope<string>;
   options: Array<Type>;
-  visibleOptions: number;
+  visibleOptionsLimit?: number | "all";
+  creatable?: boolean;
 }
 
 export interface MultiSelectProps<Type> {
@@ -52,6 +53,7 @@ export interface MultiSelectLargeProps<Type> {
   visibleOptionsLimit?: number | "all";
   hideActiveOptions?: boolean;
   maxHeight?: number;
+  creatable?: boolean;
 }
 
 export type TechnologiesGroupType = {

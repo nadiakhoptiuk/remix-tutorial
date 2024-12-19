@@ -52,8 +52,20 @@ export default function TestPage() {
           })
           .trim()
           .min(1),
-        cities: z.string().trim().min(1, { message: "Cities is required" }),
-        city: z.string().trim().min(1, { message: "City is required" }),
+        cities: z
+          .string()
+          .trim()
+          .min(1, { message: "Cities is required" })
+          .regex(new RegExp(/^[a-zA-Z_\- ,]+$/), {
+            message: "Must contains of: a-z, A-Z, - or _",
+          }),
+        city: z
+          .string()
+          .trim()
+          .min(1, { message: "City is required" })
+          .regex(new RegExp(/^[a-zA-Z_\- ,]+$/), {
+            message: "Must contains of: a-z, A-Z, - or _",
+          }),
         agreement: z.string().refine((value) => value === "on", {
           message: "You must accept the terms.",
         }),
@@ -103,7 +115,7 @@ export default function TestPage() {
             label='Single Select for Large Data'
             scope={form.scope("city")}
             options={cities}
-            visibleOptions={5}
+            visibleOptionsLimit={5}
           />
 
           <CheckboxGroup

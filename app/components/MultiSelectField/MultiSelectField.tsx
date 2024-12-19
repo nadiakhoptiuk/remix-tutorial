@@ -27,6 +27,7 @@ export const MultiSelectField = <
         "aria-describedby": errorId,
         "aria-invalid": !!field.error(),
       })}
+      error={field.error()}
       hidePickedOptions={hidePickedOptions}
       nothingFoundMessage='Nothing found...'
       styles={{

@@ -24,6 +24,7 @@ export const SingleSelectField = <
         "aria-describedby": errorId,
         "aria-invalid": !!field.error(),
       })}
+      error={field.error()}
       size='md'
       styles={{
         input: {
