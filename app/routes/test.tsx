@@ -4,6 +4,7 @@ import { useLoaderData } from "@remix-run/react";
 import { useForm } from "@rvf/remix";
 import { withZod } from "@rvf/zod";
 import { z } from "zod";
+import { Group } from "@mantine/core";
 import { Button } from "~/components/Button";
 import { Checkbox } from "~/components/Checkbox";
 import { MultiSelectLarge } from "~/components/MultiSelectLarge";
@@ -11,6 +12,8 @@ import { MultiSelectLarge } from "~/components/MultiSelectLarge";
 import { Editor } from "~/components/RichTextEditor/RichTextEditor";
 import { SingleSelectLarge } from "~/components/SingleSelectLarge";
 import { CheckboxGroup } from "~/components/CheckboxGroup";
+import { Textarea } from "~/components/Textarea";
+import { RadioGroup } from "~/components/RadioGroup";
 
 import citiesData from "~/constants/citiesData.json";
 
@@ -22,7 +25,7 @@ export const loader = async () => {
   return Response.json({
     cities,
     content:
-      "<p><strong>Jane </strong><em>wrt </em>r</p><p></p><h1>er gwr</h1><h2>sre sr</h2><p></p><ul><li><p>ser </p></li><li><p>r gtrth</p></li><li><p>uiu,</p></li></ul>",
+      "<p><strong>Jane </strong><em>hello </em></p><p></p><h1>world</h1>",
   });
 };
 
@@ -54,17 +57,32 @@ export default function TestPage() {
         agreement: z.string().refine((value) => value === "on", {
           message: "You must accept the terms.",
         }),
-        technologies: z.string().refine((value) => value !== "", {
-          message: "You must choose at least one option",
-        }),
+        technologies: z
+          .string()
+          .trim()
+          .refine((value) => value !== "", {
+            message: "You must choose at least one option",
+          }),
+        textContent: z
+          .string()
+          .trim()
+          .refine((value) => value !== "", {
+            message: "Must be filled",
+          }),
+        favoriteTechnology: z
+          .string()
+          .trim()
+          .min(1, { message: "Favorite technology is required" }),
       })
     ),
     defaultValues: {
       editor: content,
       cities: ["West Alexzander", "Champaign"],
-      city: "",
+      city: "New York",
       agreement: false,
       technologies: ["React"],
+      textContent: "Hello world",
+      favoriteTechnology: "React",
     },
     method: "POST",
     handleSubmit: (data) => console.log("LOG HANDLE SUBMIT", data),
@@ -73,32 +91,47 @@ export default function TestPage() {
   return (
     <div>
       <form {...form.getFormProps()} method='POST'>
-        <Editor label='Content:' scope={form.scope("editor")} />
-        <MultiSelectLarge
-          label='Multi Select for Large Data'
-          scope={form.scope("cities")}
-          options={cities}
-          visibleOptionsLimit={5}
-        />
-        <SingleSelectLarge
-          label='Single Select for Large Data'
-          scope={form.scope("city")}
-          options={cities}
-          visibleOptions={5}
-        />
-        <Checkbox
-          label='Do you agree with rules?'
-          scope={form.scope("agreement")}
-        />
-        <CheckboxGroup
-          scope={form.scope("technologies")}
-          label='Choose technologies you work with'
-          options={["React", "Svelte", "Angular", "Vue"]}
-        />
+        <Group gap={30}>
+          <Editor label='Content:' scope={form.scope("editor")} />
+          <MultiSelectLarge
+            label='Multi Select for Large Data'
+            scope={form.scope("cities")}
+            options={cities}
+            visibleOptionsLimit={5}
+          />
+          <SingleSelectLarge
+            label='Single Select for Large Data'
+            scope={form.scope("city")}
+            options={cities}
+            visibleOptions={5}
+          />
 
-        <Button loading={form.formState.isSubmitting} type='submit'>
-          Submit
-        </Button>
+          <CheckboxGroup
+            scope={form.scope("technologies")}
+            label='Choose technologies you work with'
+            options={["React", "Svelte", "Angular", "Vue"]}
+          />
+
+          <Textarea
+            scope={form.scope("textContent")}
+            label='Tell us about yourself'
+            placeholder='Enter here...'
+          />
+
+          <RadioGroup
+            scope={form.scope("favoriteTechnology")}
+            label='Choose your favorite technology:'
+            options={["React", "Svelte", "Angular", "Vue"]}
+          />
+
+          <Checkbox
+            label='Do you agree with rules?'
+            scope={form.scope("agreement")}
+          />
+          <Button loading={form.formState.isSubmitting} type='submit'>
+            Submit
+          </Button>
+        </Group>
       </form>
       {/* 
       <Paper shadow='xs' p='xl'>
