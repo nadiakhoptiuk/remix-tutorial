@@ -93,6 +93,7 @@ export const MultiSelectLarge = <Type extends string>({
               field.validate();
             }}
             size='md'
+            styles={{ remove: { boxShadow: "none" } }}
           >
             {item}
           </Pill>

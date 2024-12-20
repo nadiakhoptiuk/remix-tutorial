@@ -16,6 +16,7 @@ import { Textarea } from "~/components/Textarea";
 import { RadioGroup } from "~/components/RadioGroup";
 
 import citiesData from "~/constants/citiesData.json";
+import { DateTimePicker } from "~/components/DateTimePicker";
 
 export const loader = async () => {
   const cityLabels = citiesData.map(({ label }) => label);
@@ -85,6 +86,7 @@ export default function TestPage() {
           .string()
           .trim()
           .min(1, { message: "Favorite technology is required" }),
+        date: z.string(),
       })
     ),
     defaultValues: {
@@ -92,9 +94,10 @@ export default function TestPage() {
       cities: ["West Alexzander", "Champaign"],
       city: "New York",
       agreement: false,
-      technologies: ["React"],
+      technologies: ["Svelte"],
       textContent: "Hello world",
       favoriteTechnology: "React",
+      date: "2024-12-19T02:10:00.000Z",
     },
     method: "POST",
     handleSubmit: (data) => console.log("LOG HANDLE SUBMIT", data),
@@ -104,6 +107,7 @@ export default function TestPage() {
     <div>
       <form {...form.getFormProps()} method='POST'>
         <Group gap={30}>
+          <DateTimePicker label='Date:' scope={form.scope("date")} />
           <Editor label='Content:' scope={form.scope("editor")} />
           <MultiSelectLarge
             label='Multi Select for Large Data'
