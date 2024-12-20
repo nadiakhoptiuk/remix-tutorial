@@ -17,11 +17,36 @@ import { RadioGroup } from "~/components/RadioGroup";
 
 import citiesData from "~/constants/citiesData.json";
 import { DateTimePicker } from "~/components/DateTimePicker";
+import redisClient from "redis/config.server";
+// import { personRepository } from "redis/person.server";
 
 export const loader = async () => {
-  const cityLabels = citiesData.map(({ label }) => label);
+  // const person = {
+  //   firstName: "Ben",
+  //   lastName: "Smith",
+  //   age: 35,
+  //   verified: true,
+  //   skills: ["React", "Svelte"],
+  // };
 
-  const cities = [...new Set(cityLabels)];
+  // await personRepository.save(person);
+
+  const cacheKey = "cityLabels";
+  let cities = [];
+
+  const citiesCache = await redisClient.get(cacheKey);
+
+  if (citiesCache) {
+    cities = JSON.parse(citiesCache);
+    console.log("parsing cache: >>>", cities.length);
+  } else {
+    const cityLabels = citiesData.map(({ label }) => label);
+
+    cities = [...new Set(cityLabels)];
+    console.log("get values: >>>", cities.length);
+
+    redisClient.set(cacheKey, JSON.stringify(cities), "EX", 60 * 2);
+  }
 
   return Response.json({
     cities,
