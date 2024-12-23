@@ -4,6 +4,12 @@
 
 ## Development
 
+For run docker:
+
+```sh
+docker run -d --cap-add sys_resource --name RE -p 8443:8443 -p 9443:9443 -p 12000:12000 redislabs/redis
+```
+
 From your terminal:
 
 ```sh
