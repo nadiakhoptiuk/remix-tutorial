@@ -5,6 +5,7 @@ import { useForm } from "@rvf/remix";
 import { withZod } from "@rvf/zod";
 import { z } from "zod";
 import { Group } from "@mantine/core";
+
 import { Button } from "~/components/Button";
 import { Checkbox } from "~/components/Checkbox";
 import { MultiSelectLarge } from "~/components/MultiSelectLarge";
@@ -14,31 +15,17 @@ import { SingleSelectLarge } from "~/components/SingleSelectLarge";
 import { CheckboxGroup } from "~/components/CheckboxGroup";
 import { Textarea } from "~/components/Textarea";
 import { RadioGroup } from "~/components/RadioGroup";
+import { DateTimePicker } from "~/components/DateTimePicker";
 
 import citiesData from "~/constants/citiesData.json";
-import { DateTimePicker } from "~/components/DateTimePicker";
-// import {redisClient} from "redis/config.server";
 
 export const loader = async () => {
-  // const cacheKey = "cityLabels";
-  // let cities = [];
+  const cityLabels = citiesData.map(({ label }) => label);
 
-  // const citiesCache = await redisClient.get(cacheKey);
-
-  // if (citiesCache) {
-  //   cities = JSON.parse(citiesCache);
-  //   console.log("parsing cache: >>>", cities.length);
-  // } else {
-  //   const cityLabels = citiesData.map(({ label }) => label);
-
-  //   cities = [...new Set(cityLabels)];
-  //   console.log("get values: >>>", cities.length);
-
-  //   redisClient.set(cacheKey, JSON.stringify(cities), "EX", 60 * 2);
-  // }
+  const cities = [...new Set(cityLabels)];
 
   return Response.json({
-    cities: citiesData,
+    cities,
     content:
       "<p><strong>Jane </strong><em>hello </em></p><p></p><h1>world</h1>",
   });

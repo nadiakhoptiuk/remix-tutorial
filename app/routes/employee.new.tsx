@@ -12,51 +12,12 @@ import { SingleSelectField } from "~/components/SingleSelectField";
 import { TextField } from "~/components/TextField";
 import { MultiSelectLarge } from "~/components/MultiSelectLarge";
 import { SingleSelectLarge } from "~/components/SingleSelectLarge";
-import { personRepository } from "redis/person.server";
-import { EntityId } from "redis-om";
-
-export const loader = async () => {
-  const person = await personRepository
-    .search()
-    .where("firstName")
-    .equals("Ben")
-    .and("age")
-    .is.greaterThanOrEqualTo(30)
-    .return.first();
-  console.log("loader: person >>>", person);
-
-  return Response.json({ person });
-};
 
 export const action = async ({ request }: ActionFunctionArgs) => {
   const formData = await request.formData();
   const updates = Object.fromEntries(formData);
 
   console.log("updates >>>", updates);
-  const existedPerson = await personRepository
-    .search()
-    .where("firstName")
-    .equals("Ben")
-    .return.first();
-
-  if (!existedPerson) {
-    const person = {
-      firstName: "Ben",
-      lastName: "Smith",
-      age: 35,
-      verified: true,
-      skills: ["React", "Svelte"],
-    };
-
-    const ttlInSeconds = 60 * 1;
-    const savedPerson = await personRepository.save(person);
-    const personId = Reflect.get(savedPerson, EntityId);
-
-    await personRepository.expire(personId, ttlInSeconds);
-    console.log("savedPerson >>>", savedPerson);
-  } else {
-    console.log("existedPerson >>>", existedPerson);
-  }
 
   return Response.json({ success: true });
 };
@@ -64,6 +25,8 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 export const handle = { i18n: ["employee", "common"] };
 
 export default function CreateUserPage() {
+  const { t } = useTranslation();
+
   const form = useForm({
     validator: withZod(
       z.object({
@@ -92,8 +55,6 @@ export default function CreateUserPage() {
     //   return true;
     // },
   });
-
-  const { t } = useTranslation();
 
   return (
     <div>
