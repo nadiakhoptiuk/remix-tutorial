@@ -32,7 +32,8 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   const formData = await request.formData();
   const updates = Object.fromEntries(formData);
 
-  console.log("updates >>>", updates);
+  console.log("form updates >>>", updates);
+
   const existedPerson = await personRepository
     .search()
     .where("firstName")
@@ -64,6 +65,8 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 export const handle = { i18n: ["employee", "common"] };
 
 export default function CreateUserPage() {
+  const { t } = useTranslation();
+
   const form = useForm({
     validator: withZod(
       z.object({
@@ -92,8 +95,6 @@ export default function CreateUserPage() {
     //   return true;
     // },
   });
-
-  const { t } = useTranslation();
 
   return (
     <div>
@@ -135,11 +136,13 @@ export default function CreateUserPage() {
             ]}
             maxHeight={100}
           />
+
           {/* <TagsField
             label='Tags'
             scope={form.scope("tags")}
             options={["react", "web_development", "frontend", "backend"]}
           /> */}
+
           <Button
             type='submit'
             variant='filled'

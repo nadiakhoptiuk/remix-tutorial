@@ -1,5 +1,5 @@
 import { Repository, Schema } from "redis-om";
-import { redisClient } from "./config.server";
+import { redisOmClient } from "./config.server";
 
 const personSchema = new Schema(
   "person",
@@ -15,6 +15,6 @@ const personSchema = new Schema(
   }
 );
 
-export const personRepository = new Repository(personSchema, redisClient);
+export const personRepository = new Repository(personSchema, redisOmClient);
 
 await personRepository.createIndex();

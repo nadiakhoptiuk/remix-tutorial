@@ -1,16 +1,12 @@
 import { useField } from "@rvf/remix";
 import { useId } from "react";
 import { TextInput } from "@mantine/core";
+
 import "@mantine/core/styles/Input.css";
 
 import { StringFieldProps } from "~/types/common.types";
 
-export const TextField = ({
-  label,
-  scope,
-  placeholder,
-  ...rest
-}: StringFieldProps) => {
+export const TextField = ({ label, scope, placeholder }: StringFieldProps) => {
   const field = useField(scope);
   const inputId = useId();
   const errorId = useId();
@@ -30,7 +26,6 @@ export const TextField = ({
         styles={{
           wrapper: { marginBottom: 2 },
         }}
-        {...rest}
       />
     </div>
   );

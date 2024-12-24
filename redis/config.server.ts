@@ -1,24 +1,19 @@
 // --------------------------- FOR IO REDIS
 
-// import Redis from "ioredis";
+import Redis from "ioredis";
+import { createClient } from "redis";
 
-// const redisClient = new Redis({
-//   port: 12000,
-//   host: "localhost",
-//   // username: "example@mail.mail",
-//   // password: "11111111",
-// });
-
-// export default redisClient;
+export const redisIoClient = new Redis({
+  port: Number(process.env.PORT) || 12000,
+  host: process.env.HOST || "localhost",
+});
 
 // --------------------------- FOR REDIS OM
 
-import { createClient } from "redis";
-
-export const redisClient = createClient({
-  url: "redis://localhost:12000",
+export const redisOmClient = createClient({
+  url: process.env.REDIS_URL,
 });
 
-redisClient.on("error", (err) => console.log("Redis Client Error", err));
+redisOmClient.on("error", (err) => console.log("Redis Client Error", err));
 
-await redisClient.connect();
+await redisOmClient.connect();
